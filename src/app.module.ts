@@ -9,6 +9,7 @@ import { RendezVousModule } from './rendez-vous/rendez-vous.module';
 import { KineModule } from './kine/kine.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [AdminModule.createAdmin({
@@ -40,6 +41,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
     }),
     UserModule,
+    PaymentModule,
 ],
   controllers: [AppController],
   providers: [AppService],
