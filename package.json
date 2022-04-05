@@ -23,6 +23,7 @@
   "dependencies": {
     "@adminjs/express": "^4.1.0",
     "@adminjs/nestjs": "^4.0.1",
+    "@adminjs/typeorm": "^2.0.4",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.0",
     "@nestjs/core": "^8.0.0",
