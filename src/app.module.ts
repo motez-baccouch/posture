@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AdminModule } from '@adminjs/nestjs';
+import { AdminModule } from '@adminjs/nestjs'
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { RendezVousModule } from './rendez-vous/rendez-vous.module';
@@ -32,7 +32,9 @@ AdminJS.registerAdapter({ Database, Resource })
     KineModule, 
     RendezVousModule,
 
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mongodb',
       url: process.env.MONGODB_CONNECTION_STRING,
@@ -43,7 +45,7 @@ AdminJS.registerAdapter({ Database, Resource })
       ssl: true,
       useUnifiedTopology: true,
       useNewUrlParser: true,
-      synchronize: true,
+      synchronize: true,// to remove after deployement
     }),
     UserModule,
     PaymentModule,
