@@ -1,19 +1,28 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateKineDto } from './dto/create-kine.dto';
 import { UpdateKineDto } from './dto/update-kine.dto';
+import { Kine } from './entities/kine.entity';
 
 @Injectable()
 export class KineService {
-  create(createKineDto: CreateKineDto) {
-    return 'This action adds a new kine';
+  constructor(
+    @InjectRepository(Kine)
+    private readonly kineRespository : Repository<Kine>,
+  ){}
+  async create(createKineDto: CreateKineDto) {
+    const kine:Kine = await this.kineRespository.create(createKineDto);
+    
+    return this.kineRespository.save(kine);
   }
 
   findAll() {
-    return `This action returns all kine`;
+    return this.kineRespository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} kine`;
+    return this.kineRespository.findOne(id);
   }
 
   update(id: number, updateKineDto: UpdateKineDto) {
@@ -21,6 +30,6 @@ export class KineService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} kine`;
+    return this.kineRespository.softDelete(id);
   }
 }

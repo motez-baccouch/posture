@@ -13,6 +13,7 @@ import { Database, Resource } from '@adminjs/typeorm'
 import AdminJS from 'adminjs';
 import { UserModule } from './user/user.module'
 import { User } from './user/entities/user.entity';
+import { Kine } from './kine/entities/kine.entity';
 
 AdminJS.registerAdapter({ Database, Resource })
 
@@ -20,7 +21,7 @@ AdminJS.registerAdapter({ Database, Resource })
   imports: [AdminModule.createAdmin({
     adminJsOptions: {
       rootPath: '/admin',
-      resources: [User],
+      resources: [User,Kine],
     },
     auth: {
       authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
@@ -47,7 +48,6 @@ AdminJS.registerAdapter({ Database, Resource })
       useNewUrlParser: true,
       synchronize: true,// to remove after deployement
     }),
-    UserModule,
     PaymentModule,
 ],
   controllers: [AppController],
