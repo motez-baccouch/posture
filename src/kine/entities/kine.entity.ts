@@ -1,4 +1,5 @@
-import { Entity, ObjectIdColumn , ObjectID, Column, BaseEntity } from "typeorm";
+import { RendezVous } from "src/rendez-vous/entities/rendez-vous.entity";
+import { Entity, ObjectIdColumn , ObjectID, Column, BaseEntity,OneToMany } from "typeorm";
 
 @Entity('Kine')
 export class Kine extends BaseEntity{
@@ -12,4 +13,10 @@ export class Kine extends BaseEntity{
 @Column() ville : string;
 @Column() codePostal : number;
 @Column() location : string;
+@OneToMany(
+    Type => RendezVous,
+    (rendezVous)=>rendezVous.kine,
+   
+)
+rendezVous:RendezVous;
 }

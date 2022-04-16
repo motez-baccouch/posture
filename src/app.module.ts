@@ -14,6 +14,7 @@ import AdminJS from 'adminjs';
 import { UserModule } from './user/user.module'
 import { User } from './user/entities/user.entity';
 import { Kine } from './kine/entities/kine.entity';
+import { RendezVous } from './rendez-vous/entities/rendez-vous.entity';
 
 AdminJS.registerAdapter({ Database, Resource })
 
@@ -21,7 +22,7 @@ AdminJS.registerAdapter({ Database, Resource })
   imports: [AdminModule.createAdmin({
     adminJsOptions: {
       rootPath: '/admin',
-      resources: [User,Kine],
+      resources: [User,Kine,RendezVous],
     },
     auth: {
       authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
