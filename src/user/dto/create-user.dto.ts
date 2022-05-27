@@ -9,6 +9,12 @@ nom : string;
 @IsString() 
 prenom : string ;
 
+@IsString() 
+password : string ;
+
+
+
+
 @IsEmail()
 email : string;
 

@@ -1,3 +1,4 @@
+import { Roles } from "src/enums/roles.enum";
 import { RendezVous } from "src/rendez-vous/entities/rendez-vous.entity";
 import { Entity, ObjectIdColumn , ObjectID, Column, BaseEntity,OneToMany } from "typeorm";
 
@@ -7,6 +8,14 @@ export class Kine extends BaseEntity{
 @Column() nom_agence : string;
 @Column() email : string ;
 @Column() password : string ; 
+@Column() salt : string;
+@Column(
+    {
+        type: 'enum',
+        enum: Roles,
+        default: Roles.KINE
+    }
+) role : string;
 @Column() numero : number;
 @Column() photoUrl?: string;
 //@Column() anniversaire: Date;
