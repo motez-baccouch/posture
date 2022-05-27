@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserSubscribeDto } from './dto/UserSubscribe.dto';
+import { LoginCredentialsDto } from './dto/loginCredentials.dto';
 
 @Controller('user')
 export class UserController {
@@ -32,6 +33,11 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
-
+  @Post('login')
+  login(
+    @Body() credentials: LoginCredentialsDto
+  ) {
+    return this.userService.login(credentials);
+  }
  
 }

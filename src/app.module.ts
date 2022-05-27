@@ -22,7 +22,14 @@ AdminJS.registerAdapter({ Database, Resource })
   imports: [AdminModule.createAdmin({
     adminJsOptions: {
       rootPath: '/admin',
-      resources: [User,Kine,RendezVous],
+      resources: [
+        {
+          resource: User,
+          options: {
+            listProperties: [  "email", "prenom" , "nom" , "numero","role"]  // Array with the properties
+             }
+          }
+        ,Kine,RendezVous],
     },
     auth: {
       authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
