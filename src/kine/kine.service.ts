@@ -31,7 +31,6 @@ export class KineService {
   }
 
   findAllByFilter(options){
-    console.log(options);
     return this.kineRespository.findAndCount(options as FindManyOptions<Kine>)
   }
 
@@ -44,7 +43,7 @@ export class KineService {
   }
 
   update(id: number, updateKineDto: UpdateKineDto) {
-    return `This action updates a #${id} kine`;
+    return this.kineRespository.update({id:id},{});
   }
 
   remove(id: number) {

@@ -40,7 +40,6 @@ export class KineController {
   
   @Get(':id')
   findOne(@Param('id') id: string) {
-    console.log("hereeee");
     return this.kineService.findOne(Number(id));
   }
 

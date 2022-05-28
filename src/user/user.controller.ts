@@ -1,9 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserSubscribeDto } from './dto/UserSubscribe.dto';
 import { LoginCredentialsDto } from './dto/loginCredentials.dto';
+import { fileURLToPath } from 'url';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { User } from './entities/user.entity';
 
 @Controller('user')
 export class UserController {
@@ -40,4 +44,12 @@ export class UserController {
     return this.userService.login(credentials);
   }
  
+  @Post('/upload')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('image'))
+  uploadFile(@UploadedFile() file, @Request() req){
+    const user: User = req.user.user;
+    console.log("hedha howa el user ",user);
+    return  this.userService.update(Number(user.id),{...user,photoUrl:file});
+  }
 }

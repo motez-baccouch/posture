@@ -16,6 +16,8 @@ export class UserService {
     private readonly userRespository : Repository<User>,
     private jwtService : JwtService,
   ){}
+
+  
   
   async create(createUserDto: CreateUserDto) {
     const user:User =  await this.userRespository.create(createUserDto);
@@ -39,7 +41,7 @@ export class UserService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.userRespository.update({id:id},updateUserDto);
   }
 
   remove(id: number) {

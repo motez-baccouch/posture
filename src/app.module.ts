@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AdminModule } from '@adminjs/nestjs'
-import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { RendezVousModule } from './rendez-vous/rendez-vous.module';
 import { KineModule } from './kine/kine.module';
