@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { CreateKineDto } from './dto/create-kine.dto';
 import { UpdateKineDto } from './dto/update-kine.dto';
 import { Kine } from './entities/kine.entity';
+import { FilterOperator, Paginate, PaginateQuery, paginate, Paginated } from 'nestjs-paginate'
 
 @Injectable()
 export class KineService {
@@ -15,6 +16,11 @@ export class KineService {
     const kine:Kine = await this.kineRespository.create(createKineDto);
     
     return this.kineRespository.save(kine);
+  }
+
+  findAllByFilter(options){
+    console.log(options);
+    return this.kineRespository.findAndCount(options as FindManyOptions<Kine>)
   }
 
   findAll() {
