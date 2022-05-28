@@ -2,10 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Options } fro
 import { KineService } from './kine.service';
 import { CreateKineDto } from './dto/create-kine.dto';
 import { UpdateKineDto } from './dto/update-kine.dto';
-import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { Kine } from './entities/kine.entity';
 import { genderEnum } from 'src/enums/gender.enum';
 import { query } from 'express';
+import { LoginCredentialsDto } from './dto/loginCredentials.dto';
 
 @Controller('kine')
 export class KineController {
@@ -53,4 +53,11 @@ export class KineController {
   remove(@Param('id') id: string) {
     return this.kineService.remove(+id);
   }
+  @Post('login')
+  login(
+    @Body() credentials: LoginCredentialsDto
+  ) {
+    return this.kineService.login(credentials);
+  }
+
 }

@@ -1,31 +1,30 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Roles } from 'src/enums/roles.enum';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { CreateKineDto } from './dto/create-kine.dto';
+import { LoginCredentialsDto } from './dto/loginCredentials.dto';
 import { UpdateKineDto } from './dto/update-kine.dto';
 import { Kine } from './entities/kine.entity';
 import * as bcrypt from 'bcrypt';
-import { LoginCredentialsDto } from 'src/kine/dto/loginCredentials.dto';
 import { JwtService } from '@nestjs/jwt';
+
 
 @Injectable()
 export class KineService {
   constructor(
     @InjectRepository(Kine)
     private readonly kineRespository : Repository<Kine>,
+    private jwtService : JwtService,
   ){}
   async create(createKineDto: CreateKineDto) {
     const kine:Kine = await this.kineRespository.create(createKineDto);
-    kine.role = Roles.KINE;
-    kine.salt = await bcrypt.genSalt();
-    kine.password = await bcrypt.hash(kine.password, kine.salt);
-    try {
-      await this.kineRespository.save(kine);
-    } catch (e) {
-      throw new ConflictException(`error`);
-    }
+    
     return this.kineRespository.save(kine);
+  }
+
+  findAllByFilter(options){
+    console.log(options);
+    return this.kineRespository.findAndCount(options as FindManyOptions<Kine>)
   }
 
   findAll() {
@@ -43,7 +42,6 @@ export class KineService {
   remove(id: number) {
     return this.kineRespository.softDelete(id);
   }
-  
   async login(credentials: LoginCredentialsDto)  {
 
     // Récupére le login et le mot de passe
@@ -71,4 +69,6 @@ export class KineService {
       throw new NotFoundException('username ou password erronée');
     }
   }
+
+
 }
