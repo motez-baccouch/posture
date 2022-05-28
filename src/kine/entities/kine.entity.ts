@@ -19,7 +19,8 @@ export class Kine extends BaseEntity{
     }
 ) role : string;
 @Column() numero : number;
-@Column() photo: string;
+@Column() photoUrl: string;
+//@Column() anniversaire: Date;
 @Column() ville : string;
 @Column() codePostal : number;
 @Column() location : string;

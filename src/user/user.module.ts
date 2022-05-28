@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { AppController } from 'adminjs';
 
 
 @Module({
@@ -21,7 +20,7 @@ import { AppController } from 'adminjs';
       }
     })
 ],
-  controllers: [UserController,AppController],
+  controllers: [UserController],
   providers: [UserService]
   
 })

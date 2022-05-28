@@ -1,7 +1,6 @@
-import { Controller, Get, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
-import { JwtAuthGuard } from './user/guards/jwt-auth.guard';
 
 @Controller()
 export class AppController {
@@ -13,9 +12,9 @@ export class AppController {
   }
 
   @Post('/upload')
-  @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('image'))
   uploadFile(@UploadedFile() file){
+    console.log(file);
     return file;
   }
 }

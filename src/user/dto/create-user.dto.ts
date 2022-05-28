@@ -12,7 +12,7 @@ numero : number;
 @IsNumber()
 age : number ; 
 @IsString() 
-photo?: string;
+photoUrl?: string;
 /* @IsDate() 
 anniversaire: Date; */
 @IsString() 
