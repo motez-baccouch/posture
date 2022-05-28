@@ -51,7 +51,6 @@ export class UserService {
 
     // Récupére le login et le mot de passe
      const {username, password} = credentials;
-    // On peut se logger ou via le username ou le password
     // Vérifier est ce qu'il y a un user avec ce login ou ce mdp
     const user = await this.userRespository.findOne( {email : username} );
     // console.log(user);
