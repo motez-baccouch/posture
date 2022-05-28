@@ -12,7 +12,7 @@ password : string ;
 numero : number;
 @IsString()
 @IsOptional()
-photoUrl?: string;
+photo?: string;
 @IsString()
 ville : string;
 @IsNumber()

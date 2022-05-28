@@ -15,7 +15,7 @@ export class User extends BaseEntity{
 @Column() email : string ;
 @Column() numero : number;
 @Column() age : number ; 
-@Column() photoUrl?: string;
+@Column() photo?: string;
 //@Column() anniversaire: Date;
 @Column() ville : string;
 @Column() codePostal : number;
