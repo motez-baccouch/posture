@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, Repository } from 'typeorm';
 import { CreateKineDto } from './dto/create-kine.dto';
@@ -7,6 +7,7 @@ import { UpdateKineDto } from './dto/update-kine.dto';
 import { Kine } from './entities/kine.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { Roles } from 'src/enums/roles.enum';
 
 
 @Injectable()
@@ -18,8 +19,15 @@ export class KineService {
   ){}
   async create(createKineDto: CreateKineDto) {
     const kine:Kine = await this.kineRespository.create(createKineDto);
+    kine.role = Roles.KINE;
+    kine.salt = await bcrypt.genSalt();
+    kine.password = await bcrypt.hash(kine.password, kine.salt);
+    try {
+      return await this.kineRespository.save(kine);
+    } catch (e) {
+      throw new ConflictException(`error`);
+    }
     
-    return this.kineRespository.save(kine);
   }
 
   findAllByFilter(options){

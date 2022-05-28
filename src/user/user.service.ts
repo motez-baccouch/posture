@@ -18,16 +18,16 @@ export class UserService {
   ){}
   
   async create(createUserDto: CreateUserDto) {
-    const user:User = await this.userRespository.create(createUserDto);
+    const user:User =  this.userRespository.create(createUserDto);
     user.role = Roles.USER;
     user.salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, user.salt);
     try {
-      await this.userRespository.save(user);
+      return await this.userRespository.save(user);
     } catch (e) {
       throw new ConflictException(`error`);
     }
-    return this.userRespository.save(user);
+    
   }
 
   findAll() {
