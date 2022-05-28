@@ -15,11 +15,15 @@ import { UserModule } from './user/user.module'
 import { User } from './user/entities/user.entity';
 import { Kine } from './kine/entities/kine.entity';
 import { RendezVous } from './rendez-vous/entities/rendez-vous.entity';
+import { MulterModule } from '@nestjs/platform-express';
 
 AdminJS.registerAdapter({ Database, Resource })
 
 @Module({
-  imports: [AdminModule.createAdmin({
+  imports: [MulterModule.register({
+    dest: './UploadedFiles/images'
+  }),
+    AdminModule.createAdmin({
     adminJsOptions: {
       rootPath: '/admin',
       resources: [
