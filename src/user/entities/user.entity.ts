@@ -1,6 +1,6 @@
 import { Roles } from "src/enums/roles.enum";
 import { RendezVous } from "src/rendez-vous/entities/rendez-vous.entity";
-import { Entity, ObjectIdColumn , ObjectID, Column, BaseEntity, OneToMany } from "typeorm";
+import { Entity, ObjectIdColumn , ObjectID, Column, BaseEntity, OneToMany, DeleteDateColumn } from "typeorm";
 
 @Entity('User')
 export class User extends BaseEntity{
@@ -26,6 +26,7 @@ export class User extends BaseEntity{
 @Column() codePostal : number;
 @Column() location : string;
 @Column() sexe : string;
+@DeleteDateColumn() deletedAt : Date;
 @OneToMany(
     Type => RendezVous,
     (rendezVous)=>rendezVous.user,

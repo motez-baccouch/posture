@@ -1,15 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UploadedFile, UseGuards, UseInterceptors, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UploadedFile, UseGuards, UseInterceptors, Query,  UnauthorizedException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserSubscribeDto } from './dto/UserSubscribe.dto';
 import { LoginCredentialsDto } from './dto/loginCredentials.dto';
-import { fileURLToPath } from 'url';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from './entities/user.entity';
 import { genderEnum } from 'src/enums/gender.enum';
 import { Roles } from 'src/enums/roles.enum';
+import { ObjectID } from 'typeorm';
 
 @Controller('user')
 export class UserController {
@@ -21,25 +20,36 @@ export class UserController {
   }
 
   @Get('users')
-  findAll() {
+  @UseGuards(JwtAuthGuard)
+  findAll(@Request() req) {
+    const user: User = req.user;
+    console.log("hedha howa el user ",user);
+    if(req.user.role == Roles.ADMIN)
     return this.userService.findAllUsers();
+    else
+    return new UnauthorizedException();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.findOne(id);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  async update(@Param('id') id: ObjectID, @Body() updateUserDto: UpdateUserDto, @Request() req) {
+    const user: User = req.user;
+    const userToUpdate = await this.userService.findOne(id);
+    const userToUpdateId = userToUpdate.id;
+    if(user.role == Roles.ADMIN || userToUpdateId == user.id)
+    return await this.userService.update(userToUpdateId, updateUserDto);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  remove(@Param('id') id: any) {
+    return this.userService.remove(id);
   }
   @Post('login')
   login(
@@ -51,10 +61,10 @@ export class UserController {
   @Post('/upload')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('image'))
-  uploadFile(@UploadedFile() file, @Request() req){
-    const user: User = req.user.user;
-    console.log("hedha howa el user ",user);
-    return  this.userService.update(Number(user.id),{...user,photoUrl:file});
+  async uploadFile(@UploadedFile() file, @Request() req){
+    const user: User = req.user;
+    const filename = file["path"] + ".jpg"
+    return  await this.userService.update(user.id,{photoUrl: filename});
   }
 
   @Get('/kine/filter')
