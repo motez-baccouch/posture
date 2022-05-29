@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { AdminModule } from '@adminjs/nestjs'
 import { UserService } from './user/user.service';
 import { RendezVousModule } from './rendez-vous/rendez-vous.module';
-import { KineModule } from './kine/kine.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentModule } from './payment/payment.module';
@@ -12,7 +11,6 @@ import { Database, Resource } from '@adminjs/typeorm'
 import AdminJS from 'adminjs';
 import { UserModule } from './user/user.module'
 import { User } from './user/entities/user.entity';
-import { Kine } from './kine/entities/kine.entity';
 import { RendezVous } from './rendez-vous/entities/rendez-vous.entity';
 import { MulterModule } from '@nestjs/platform-express';
 
@@ -31,8 +29,7 @@ AdminJS.registerAdapter({ Database, Resource })
           options: {
             listProperties: [  "email", "prenom" , "nom" , "numero","role"]  // Array with the properties
              }
-          }
-        ,Kine,RendezVous],
+          }],
     },
     auth: {
       authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
@@ -41,7 +38,6 @@ AdminJS.registerAdapter({ Database, Resource })
     },
   }), 
     UserModule, 
-    KineModule, 
     RendezVousModule,
 
     ConfigModule.forRoot({

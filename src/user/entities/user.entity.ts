@@ -9,14 +9,19 @@ export class User extends BaseEntity{
 @Column() prenom : string ;
 @Column() password : string ;
 @Column() salt : string;
-@Column(
-    {enum: Roles}
-) role : string;
+@Column({
+    default: false
+}) ableToTravel : boolean;
+@Column({
+    enum: Roles,
+    type: "enum",
+    default: Roles.USER
+}
+) role : Roles;
 @Column() email : string ;
 @Column() numero : number;
 @Column() age : number ; 
 @Column() photoUrl?: string;
-//@Column() anniversaire: Date;
 @Column() ville : string;
 @Column() codePostal : number;
 @Column() location : string;

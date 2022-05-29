@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -21,7 +21,6 @@ export class UserService {
   
   async create(createUserDto: CreateUserDto) {
     const user:User =  await this.userRespository.create(createUserDto);
-    user.role = Roles.USER;
     user.salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, user.salt);
     try {
@@ -32,7 +31,7 @@ export class UserService {
     
   }
 
-  findAll() {
+  findAllUsers() {
     return this.userRespository.find();
   }
 
@@ -46,6 +45,10 @@ export class UserService {
 
   remove(id: number) {
     return this.userRespository.softDelete(id);
+  }
+
+  findAllByFilter(options){
+    return this.userRespository.findAndCount(options as FindManyOptions<User>)
   }
 
  
