@@ -1,4 +1,5 @@
-import { IsDate, IsEmail, isNumber, IsNumber, IsString } from "class-validator";
+import { IsDate, IsEmail, isNumber, IsNumber, IsString , IsBoolean} from "class-validator";
+import { Roles } from "src/enums/roles.enum";
 
 export class CreateUserDto {
 @IsString() 
@@ -23,4 +24,8 @@ codePostal : number;
 location : string;
 @IsString() 
 sexe : string;
+@IsString()
+role : Roles;
+@IsBoolean()
+ableToTravel : boolean;
 }

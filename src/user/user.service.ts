@@ -35,16 +35,16 @@ export class UserService {
     return this.userRespository.find();
   }
 
-  findOne(id: number) {
+  findOne(id: any) {
     return this.userRespository.findOne(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: any, updateUserDto: UpdateUserDto) {
     return this.userRespository.update({id:id},updateUserDto);
   }
 
-  remove(id: number) {
-    return this.userRespository.softDelete(id);
+  remove(id: any) {
+    return this.userRespository.softRemove(id);
   }
 
   findAllByFilter(options){

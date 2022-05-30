@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UploadedFile, UseGuards, UseInterceptors, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UploadedFile, UseGuards, UseInterceptors, Query, UnauthorizedException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -21,25 +21,33 @@ export class UserController {
   }
 
   @Get('users')
-  findAll() {
+  @UseGuards(JwtAuthGuard)
+  findAll(@Request() req) {
+    const user: User = req.user;
+    if(req.user.role == Roles.ADMIN)
     return this.userService.findAllUsers();
+    else
+    return new UnauthorizedException();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
+    return this.userService.update(user.id, updateUserDto);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const user = await this.findOne(id);
+    return this.userService.remove(user.id);
   }
   @Post('login')
   login(
@@ -53,7 +61,6 @@ export class UserController {
   @UseInterceptors(FileInterceptor('image'))
   uploadFile(@UploadedFile() file, @Request() req){
     const user: User = req.user.user;
-    console.log("hedha howa el user ",user);
     return  this.userService.update(Number(user.id),{...user,photoUrl:file});
   }
 
