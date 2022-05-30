@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Render, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './user/guards/jwt-auth.guard';
@@ -8,9 +8,8 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+  @Render('Index')
+  getIndex() {}
 
   @Post('/upload')
   @UseInterceptors(FileInterceptor('image'))
