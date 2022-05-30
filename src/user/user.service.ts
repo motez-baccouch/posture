@@ -35,15 +35,15 @@ export class UserService {
     return this.userRespository.find();
   }
 
-  findOne(id: any) {
+  findOne(id: number) {
     return this.userRespository.findOne(id);
   }
 
-  async update(id: any, updateUserDto: UpdateUserDto) {
-    return await this.userRespository.update({id:id},updateUserDto);
+  update(id: number, updateUserDto: UpdateUserDto) {
+    return this.userRespository.update({id:id},updateUserDto);
   }
 
-  remove(id: any) {
+  remove(id: number) {
     return this.userRespository.softDelete(id);
   }
 
