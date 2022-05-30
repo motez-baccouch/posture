@@ -33,21 +33,29 @@ export class UserController {
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.findOne(id);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Request() req) {
     const user = await this.findOne(id);
+    console.log(typeof(req.user.id))
+    console.log(typeof(user.id))
+    if(req.user.role == Roles.ADMIN || user.email == req.user.email)
     return this.userService.update(user.id, updateUserDto);
+    else
+    return new UnauthorizedException();
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string, @Request() req) {
     const user = await this.findOne(id);
+    if(req.user.role == Roles.ADMIN || user.email == req.user.email)
     return this.userService.remove(user.id);
+    else
+    return new UnauthorizedException();
   }
   @Post('login')
   login(
