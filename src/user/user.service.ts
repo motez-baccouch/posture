@@ -35,6 +35,8 @@ export class UserService {
     return this.userRespository.find();
   }
 
+
+
   findOne(id: any) {
     return this.userRespository.findOne(id);
   }
@@ -47,8 +49,8 @@ export class UserService {
     return this.userRespository.softRemove(id);
   }
 
-  findAllByFilter(options){
-    return this.userRespository.findAndCount(options as FindManyOptions<User>)
+  async findAllByFilter(options){
+    return await this.userRespository.findAndCount(options as FindManyOptions<User>)
   }
 
  

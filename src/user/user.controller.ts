@@ -73,8 +73,7 @@ export class UserController {
   }
 
   @Get('/kine/filter')
-  @UseGuards(JwtAuthGuard)
-  findAllByFilter(@Query('age') age: number,
+  async findAllByFilter(@Query('age') age: number,
                   @Query('gender') gender: genderEnum,
                   @Query('ableToTravel') ableToTravel: boolean,
                   @Query('ville') ville: string){
@@ -88,7 +87,11 @@ export class UserController {
                     if(ableToTravel)
                     options["ableToTravel"]=ableToTravel;
                     options["role"]= Roles.KINE;
-                    return this.userService.findAllByFilter(options);
+                    return await this.userService.findAllByFilter(options);
     
   }
+
 }
+
+
+
