@@ -13,15 +13,11 @@ import { UserModule } from './user/user.module'
 import { User } from './user/entities/user.entity';
 import { RendezVous } from './rendez-vous/entities/rendez-vous.entity';
 import { MulterModule } from '@nestjs/platform-express';
-import { RenderModule } from 'nest-next';
-import Next from 'next'
 
 AdminJS.registerAdapter({ Database, Resource })
 
 @Module({
-  imports: [RenderModule.forRootAsync(Next({ dev: process.env.NODE_ENV !== 'production' }),
-  { passthrough404: true, viewsDir: null }),
-    MulterModule.register({
+  imports: [MulterModule.register({
     dest: './UploadedFiles/images'
   }),
     AdminModule.createAdmin({
