@@ -31,7 +31,6 @@ export class UserController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
@@ -40,8 +39,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Request() req) {
     const user = await this.findOne(id);
-    console.log(typeof(req.user.id))
-    console.log(typeof(user.id))
     if(req.user.role == Roles.ADMIN || user.email == req.user.email)
     return this.userService.update(user.id, updateUserDto);
     else
@@ -53,7 +50,7 @@ export class UserController {
   async remove(@Param('id') id: string, @Request() req) {
     const user = await this.findOne(id);
     if(req.user.role == Roles.ADMIN || user.email == req.user.email)
-    return this.userService.remove(user.id);
+    return this.userService.remove(user);
     else
     return new UnauthorizedException();
   }
@@ -68,20 +65,21 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('image'))
   uploadFile(@UploadedFile() file, @Request() req){
-    const user: User = req.user.user;
-    return  this.userService.update(Number(user.id),{...user,photoUrl:file});
+    const user: User = req.user;
+    console.log(file);
+    const filename = file["originalname"];
+    return  this.userService.update(user.id,{...user,photoUrl:filename});
   }
 
   @Get('/kine/filter')
-  async findAllByFilter(@Query('age') age: number,
+  async findAllByFilter(
                   @Query('gender') gender: genderEnum,
                   @Query('ableToTravel') ableToTravel: boolean,
                   @Query('ville') ville: string){
+                    console.log("filter called");
                     var options = {};
-                    if(age)
-                    options["age"]=age;
                     if(gender)
-                    options["gender"]=gender;
+                    options["sexe"]=gender;
                     if(ville)
                     options["ville"]=ville;
                     if(ableToTravel)

@@ -12,7 +12,7 @@ import { JwtStrategy } from './strategy/passport-jwt.strategy';
 @Module({
   imports: [
     MulterModule.register({
-      dest:'../UploadedFiles/images',
+      dest:'../../../posturefront/assets',
     }),
     TypeOrmModule.forFeature([User]),
     PassportModule.register({

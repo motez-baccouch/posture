@@ -45,8 +45,8 @@ export class UserService {
     return this.userRespository.update({id:id},updateUserDto);
   }
 
-  remove(id: any) {
-    return this.userRespository.softRemove(id);
+  remove(user: any) {
+    return this.userRespository.remove(user);
   }
 
   async findAllByFilter(options){
@@ -60,7 +60,6 @@ export class UserService {
      const {username, password} = credentials;
     // Vérifier est ce qu'il y a un user avec ce login ou ce mdp
     const user = await this.userRespository.findOne( {email : username} );
-    // console.log(user);
     // Si not user je déclenche une erreur
 
     if (!user)
